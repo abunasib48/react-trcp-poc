@@ -8,6 +8,14 @@
     "allowArbitraryExtensions": true,
     "skipLibCheck": true,
 
+    /* Type-only bridge to the NestJS backend.
+       `@backend/*` maps to the backend's EMITTED declarations (dist/*.d.ts),
+       so the frontend reuses the real AppRouter type instead of redeclaring it.
+       Nothing is imported at runtime -- `import type` is fully erased. */
+    "paths": {
+      "@backend/*": ["../nest-trpc-poc/dist/*"]
+    },
+
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
