@@ -200,3 +200,114 @@ tbody tr:hover td a { text-decoration: underline; }
   color: var(--error);
 }
 .notice-error strong { color: var(--error); }
+
+/* --- create form ------------------------------------------------------- */
+
+.create { padding: 24px; margin-bottom: 24px; }
+
+.create-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  margin-bottom: 16px;
+}
+.create-head h2 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 650;
+}
+
+.radio-row {
+  display: flex;
+  gap: 16px;
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.radio {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  font-size: 14px;
+  font-weight: 550;
+  cursor: pointer;
+}
+.radio input { margin: 0; cursor: pointer; }
+
+.create-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.create-grid > label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+.create-grid .full { grid-column: 1 / -1; }
+
+.create-grid input,
+.create-grid select {
+  font: inherit;
+  font-size: 14px;
+  color: var(--text);
+  padding: 8px 10px;
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  background: var(--surface);
+  width: 100%;
+}
+.create-grid input:focus,
+.create-grid select:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: -1px;
+  border-color: var(--accent);
+}
+.create-grid select { text-transform: capitalize; }
+
+.create-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  margin-top: 16px;
+}
+.create-actions button {
+  font: inherit;
+  font-size: 14px;
+  font-weight: 550;
+  padding: 9px 16px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+}
+.create-actions button:hover:not(:disabled) { background: #2f4bc4; }
+.create-actions button:disabled { opacity: 0.55; cursor: default; }
+
+.ok { font-size: 13px; color: var(--muted); }
+.ok a { color: var(--accent); font-weight: 550; text-decoration: none; }
+.ok a:hover { text-decoration: underline; }
+
+.create-error {
+  margin: 16px 0 0;
+  padding: 12px 16px;
+  border: 1px solid #fbd3cd;
+  border-radius: 8px;
+  background: var(--error-bg);
+  color: var(--error);
+  font-size: 13px;
+}
+
+@media (max-width: 560px) {
+  .create-grid { grid-template-columns: 1fr; }
+}

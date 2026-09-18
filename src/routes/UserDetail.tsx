@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { TRPCClientError } from '@trpc/client'
 import type { inferRouterOutputs } from '@trpc/server'
@@ -30,6 +30,7 @@ export function UserDetail() {
   // Tagged with the id it belongs to, so a result left over from the previous
   // route reads as "still loading" rather than showing the wrong user.
   const [result, setResult] = useState<{ id: string; state: State } | null>(null)
+  const requestedId = useRef<string | null>(null)
 
   const numericId = Number(id)
   const idIsValid = Number.isInteger(numericId) && numericId > 0
@@ -42,6 +43,14 @@ export function UserDetail() {
 
   useEffect(() => {
     if (!idIsValid || id === undefined) return
+
+    // React StrictMode runs effects twice in dev. Without this guard the same
+    // query fires twice and httpBatchLink merges the pair into a single HTTP
+    // request that repeats the id: input={"0":{"id":1},"1":{"id":1}}.
+    // Production builds do not double-invoke, so this only affects dev noise.
+    if (requestedId.current === id) return
+    requestedId.current = id
+
     const settle = (s: State) => setResult({ id, state: s })
 
     // The tRPC call. `numericId` must be a number and `user` comes back fully

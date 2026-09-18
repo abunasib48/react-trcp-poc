@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { CreateUserForm } from '../CreateUserForm'
 import { restGetUsers, type RestUser } from '../rest'
 
 /** Older rows predate the gender/profession/address columns, so they are null. */
@@ -16,14 +17,25 @@ export function UserTable() {
   const navigate = useNavigate()
   const [users, setUsers] = useState<RestUser[] | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const loadStarted = useRef(false)
 
-  useEffect(() => {
-    restGetUsers()
+  // Also called by the create form to refresh the list after a new user.
+  const load = useCallback(() => {
+    setError(null)
+    return restGetUsers()
       .then(setUsers)
       .catch((e: unknown) =>
         setError(e instanceof Error ? e.message : String(e)),
       )
   }, [])
+
+  useEffect(() => {
+    // React StrictMode runs effects twice in dev. Without this guard the list
+    // is fetched twice on every mount. See the same guard in UserDetail.
+    if (loadStarted.current) return
+    loadStarted.current = true
+    void load()
+  }, [load])
 
   return (
     <main className="page">
@@ -31,6 +43,8 @@ export function UserTable() {
         <h1>Users</h1>
         <span className="transport">Loaded via REST GET /users</span>
       </header>
+
+      <CreateUserForm onCreated={load} />
 
       {error && (
         <div className="notice notice-error">
