@@ -1,0 +1,202 @@
+/* One plain stylesheet. 8px spacing scale, no framework, no preprocessor. */
+
+:root {
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --border: #e3e5e9;
+  --border-strong: #d2d5dc;
+  --head-bg: #f0f2f5;
+  --hover: #f4f6fa;
+  --text: #1a1d23;
+  --muted: #6b7280;
+  --accent: #3b5bdb;
+  --error: #b42318;
+  --error-bg: #fef3f2;
+  --radius: 10px;
+
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial,
+    sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* --- layout ------------------------------------------------------------ */
+
+.page {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 40px 16px 64px;
+}
+.page-narrow { max-width: 560px; }
+
+.page-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  margin-bottom: 24px;
+}
+.page-head h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+
+/* The demo's point: which transport served this page. */
+.transport {
+  padding: 4px 10px;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 550;
+  white-space: nowrap;
+}
+
+.muted { color: var(--muted); }
+.blank { color: #b0b4bd; }
+.count { margin-top: 16px; font-size: 13px; }
+
+/* --- table ------------------------------------------------------------- */
+
+.table-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow-x: auto; /* keeps the table usable in a narrow window */
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+thead th {
+  background: var(--head-bg);
+  padding: 10px 16px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+tbody td {
+  padding: 12px 16px;
+  border-top: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+tbody tr { cursor: pointer; }
+tbody tr:hover { background: var(--hover); }
+tbody tr:first-child td { border-top: none; }
+
+.col-id {
+  width: 1%;
+  white-space: nowrap;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Width hints so slack lands in the last column instead of stretching Email.
+   The table still scrolls inside .table-wrap on a narrow window. */
+table { min-width: 560px; }
+thead th:nth-child(2) { width: 22%; }
+thead th:nth-child(3) { width: 30%; }
+thead th:nth-child(4) { width: 14%; }
+
+td a {
+  color: var(--accent);
+  font-weight: 550;
+  text-decoration: none;
+}
+tbody tr:hover td a { text-decoration: underline; }
+
+/* --- gender pill ------------------------------------------------------- */
+
+.pill {
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 550;
+  text-transform: capitalize;
+  border: 1px solid transparent;
+}
+.pill-male   { background: #e7f0fe; color: #1c4ea8; border-color: #cfe0fb; }
+.pill-female { background: #fbeaf4; color: #9c2f75; border-color: #f5d5e8; }
+.pill-other  { background: #eef0f3; color: #4b5563; border-color: #e0e3e8; }
+
+/* --- detail card ------------------------------------------------------- */
+
+.back {
+  display: inline-block;
+  margin-bottom: 24px;
+  color: var(--muted);
+  font-size: 13px;
+  text-decoration: none;
+}
+.back:hover { color: var(--accent); }
+
+.card {
+  margin: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 8px 24px;
+}
+
+.field {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 24px;
+  padding: 14px 0;
+  border-top: 1px solid var(--border);
+}
+.field:first-child { border-top: none; }
+
+.field dt {
+  flex: 0 0 104px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+}
+.field dd {
+  flex: 1 1 200px;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+/* --- notices ----------------------------------------------------------- */
+
+.notice {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  color: var(--muted);
+}
+.notice strong { display: block; color: var(--text); margin-bottom: 4px; }
+.notice p { margin: 4px 0 0; font-size: 14px; }
+
+.notice-error {
+  background: var(--error-bg);
+  border-color: #fbd3cd;
+  color: var(--error);
+}
+.notice-error strong { color: var(--error); }

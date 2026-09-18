@@ -36,7 +36,12 @@
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
-    "verbatimModuleSyntax": true,
+    /* Off because tsc also checks the Nest sources reached through
+       `@backend/*`, and those are written for the Nest tsconfig, which does
+       not enable this (e.g. user.service.ts does `import { Gender, User }`).
+       The type-only import in trpc.ts is still written as `import type`, so it
+       is erased either way and no server code reaches the bundle. */
+    "verbatimModuleSyntax": false,
     "moduleDetection": "force",
     "noEmit": true,
     "jsx": "react-jsx",

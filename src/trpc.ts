@@ -1,6 +1,6 @@
 /**
- * TRANSPORT B - tRPC, over the vanilla client (no @tanstack/react-query,
- * no tRPC React bindings).
+ * TRANSPORT B - tRPC, over the vanilla client (no @tanstack/react-query and
+ * no tRPC React bindings). Used by the detail page only.
  */
 import { createTRPCClient, httpBatchLink } from '@trpc/client'
 
