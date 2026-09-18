@@ -8,13 +8,30 @@
     "allowArbitraryExtensions": true,
     "skipLibCheck": true,
 
-    /* Type-only bridge to the NestJS backend.
-       `@backend/*` maps to the backend's EMITTED declarations (dist/*.d.ts),
-       so the frontend reuses the real AppRouter type instead of redeclaring it.
-       Nothing is imported at runtime -- `import type` is fully erased. */
+    /* --- The cross-boundary type bridge -----------------------------------
+       `@backend/*` -> the Nest project's SOURCE (not its dist), so the
+       contract can never be stale. src/trpc.ts does:
+           import type { AppRouter } from '@backend/trpc/trpc.router.js'
+       which is the alias form of
+           import type { AppRouter } from '../../nest-trpc-poc/src/trpc/trpc.router.js'
+
+       tsc follows that import into the Nest sources, so this config has to be
+       able to type-check *them* too. That is what the three settings below are
+       for -- they are not needed by any file in src/:
+         experimentalDecorators         -> @Injectable() / @InjectRepository()
+         strictPropertyInitialization:false -> `id: number;` on the User entity
+         and `erasableSyntaxOnly` had to go: Nest uses constructor parameter
+         properties, which that flag forbids.
+
+       `moduleResolution: bundler` still remaps the backend's nodenext-style
+       './user.entity.js' specifiers onto the real .ts files.
+       None of this reaches the browser: the import is type-only, so Vite
+       never sees it and no server code is bundled. */
     "paths": {
-      "@backend/*": ["../nest-trpc-poc/dist/*"]
+      "@backend/*": ["../nest-trpc-poc/src/*"]
     },
+    "experimentalDecorators": true,
+    "strictPropertyInitialization": false,
 
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -27,7 +44,6 @@
     /* Linting */
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true
   },
   "include": ["src"]
